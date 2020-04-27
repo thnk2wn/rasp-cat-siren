@@ -24,12 +24,10 @@ ENV LD_LIBRARY_PATH /opt/vc/lib
 # For Unosquare camera (which just shells to raspistill)
 ENV PATH="/opt/vc/bin:${PATH}"
 
-
 # --- PI System Level Env Vars ---
 
 # Time will be UTC by Default, regardless of host PI settings
 ENV TZ=America/New_York
-
 
 # --- Serilog env variable defaults ---
 
@@ -41,7 +39,6 @@ ENV Serilog__MinimumLevel__Override__MMALSharp Information
 
 # Tone down MS ASP.NET Core logging
 ENV Serilog__MinimumLevel__Override__Microsoft Warning
-
 
 # --- Siren App Custom Env Variable Defaults ---
 

@@ -1,0 +1,71 @@
+name: Cat Siren Push
+
+on:
+  push:
+    paths:
+    - 'siren/**'
+    - '.github/workflows/push-siren.yml'
+
+jobs:
+  cat-siren:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set Build Number
+      run: echo "::set-env name=BUILD_VER::1.0.$GITHUB_RUN_NUMBER"
+
+    - name: Set Image Name
+      run: echo "::set-env name=IMG::cat-siren"
+
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: Docker build
+      uses: docker/build-push-action@v1
+      with:
+        path: ./siren
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        repository: ${{ secrets.DOCKER_USERNAME }}/${{ env.IMG }}
+        labels: BUILD_VER=${{ env.BUILD_VER }}
+        add_git_labels: true
+        tags: ${{ env.BUILD_VER }},latest
+        tag_with_ref: false
+        tag_with_sha: true
+        push: true
+
+  cat-siren-debug:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set Build Number
+      run: echo "::set-env name=BUILD_VER::1.0.$GITHUB_RUN_NUMBER"
+
+    - name: Set Image Name
+      run: echo "::set-env name=IMG::cat-siren"
+
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: QEMU Prep
+      working-directory: ./siren
+      run: |
+          pwd
+          chmod u+x ./qemu.sh
+          sudo ./qemu.sh
+
+    - name: Docker build (Debug)
+      uses: docker/build-push-action@v1
+      with:
+        path: ./siren
+        dockerfile: ./siren/Dockerfile.debug
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        repository: ${{ secrets.DOCKER_USERNAME }}/${{ env.IMG }}
+        build_args: QEMU=true
+        labels: BUILD_VER=${{ env.BUILD_VER }}
+        add_git_labels: true
+        tags: latest-debug
+        tag_with_ref: false
+        tag_with_sha: false
+        push: true

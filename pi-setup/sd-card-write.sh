@@ -154,6 +154,8 @@ sed -i -e "s/\${host}/${host_name}/" "$volume/setup.sh"
 echo "Copying docker pull script for app updates"
 cp pull.sh "$volume"
 
+cp raspbian-build.sh "$volume"
+
 echo "Image burned. Remove SD card, insert in PI and power on"
 sudo diskutil eject "$disk_name"
 

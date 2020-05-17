@@ -34,7 +34,10 @@ namespace CatSiren
             var machine = new StateMachine<SirenState, SirenTrigger>(
                 () => this.State, newState => this.State = newState);
 
-            machine.OnTransitioned(OnStateTransition);
+            machine.OnTransitioned(t =>
+                this.logger.LogInformation("Siren state has changed from {source} to {dest}",
+                    t.Source,
+                    t.Destination));
 
             machine.Configure(SirenState.Warmup)
                 .Permit(SirenTrigger.Initialized, SirenState.Idle);
@@ -56,18 +59,9 @@ namespace CatSiren
                 .Permit(SirenTrigger.CooldownElapsed, SirenState.Idle)
                 .OnEntryAsync(OnCooldown);
 
-            // string graph = Stateless.Graph.UmlDotGraph.Format(machine.GetInfo());
-            // System.Diagnostics.Debug.WriteLine(graph);
+            //System.Diagnostics.Debug.WriteLine(Stateless.Graph.UmlDotGraph.Format(machine.GetInfo()));
 
             return machine;
-        }
-
-        private void OnStateTransition(StateMachine<SirenState, SirenTrigger>.Transition transition)
-        {
-            this.logger.LogInformation(
-                "Siren state has changed from {source} to {dest}",
-                transition.Source,
-                transition.Destination);
         }
 
         public SirenState State { get; private set; }
@@ -80,7 +74,7 @@ namespace CatSiren
             {
                 await SetSensorState(this.gpio.Read(this.settings.PirPin));
                 await Task.Delay(1000);
-                this.LogState();
+                this.LogVerboseState();
             }
         }
 
@@ -103,7 +97,7 @@ namespace CatSiren
             await this.machine.FireAsync(SirenTrigger.Initialized);
         }
 
-        private void LogState()
+        private void LogVerboseState()
         {
             this.logger.LogTrace(
                 "{pirPinState}. Siren state: {sirenState}",
@@ -149,7 +143,10 @@ namespace CatSiren
 
         private async void CaptureFootage(object state)
         {
-            await this.cameraService.CaptureFootageAsync();
+            // TODO: implement camera service and record photos / video here up to X configured period
+            this.logger.LogInformation("TODO: capture camera footage now");
+            await Task.Delay(TimeSpan.FromSeconds(10));
+
             await this.machine.FireAsync(SirenTrigger.FootageCaptured);
         }
 

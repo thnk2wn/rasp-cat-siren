@@ -1,5 +1,5 @@
 # Stage 1 - build
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1.102 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1.402 AS build
 
 ENV DOTNET_CLI_TELEMETRY_OPTOUT 1
 
@@ -11,7 +11,7 @@ RUN dotnet publish -c Release -o /app
 RUN echo $(ls /app)
 
 # Stage 2 - Final runtime base image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1.2-buster-slim-arm32v7 AS final
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1.8-buster-slim-arm32v7 AS final
 
 WORKDIR /app
 COPY --from=build /app .

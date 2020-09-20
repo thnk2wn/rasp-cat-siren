@@ -42,7 +42,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: ./siren
-        file: Dockerfile
+        file: ./siren/Dockerfile
         labels: |
           org.opencontainers.image.authors=${{ github.repository_owner }}
           org.opencontainers.image.created=${{ env.BUILD_DATE }}
@@ -89,7 +89,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: ./siren
-        file: Dockerfile.debug
+        file: ./siren/Dockerfile.debug
         labels: |
           org.opencontainers.image.authors=${{ github.repository_owner }}
           org.opencontainers.image.created=${{ env.BUILD_DATE }}

@@ -36,7 +36,7 @@ jobs:
       name: Docker build and push
       uses: docker/build-push-action@v2
       with:
-        path: ./siren
+        file: ./siren/Dockerfile
         labels: |
           org.opencontainers.image.authors=${{ github.repository_owner }}
           org.opencontainers.image.created=${{ env.BUILD_DATE }}
@@ -81,7 +81,7 @@ jobs:
       name: Docker build and push - Debug
       uses: docker/build-push-action@v2
       with:
-        path: ./siren
+        file: ./siren/Dockerfile.debug
         labels: |
           org.opencontainers.image.authors=${{ github.repository_owner }}
           org.opencontainers.image.created=${{ env.BUILD_DATE }}

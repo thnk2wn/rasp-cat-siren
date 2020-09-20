@@ -17,9 +17,10 @@ jobs:
     -
       name: Set Environment Variables
       run: |
+        IMG=cat-siren
         echo "::set-env name=BUILD_VER::1.0.$GITHUB_RUN_NUMBER"
-        echo "::set-env name=IMG::cat-siren"
-        echo "::set-env name=IMAGE::ghcr.io/${{ github.repository_owner }}/${{ env.IMG }}"
+        echo "::set-env name=IMG::${IMG}"
+        echo "::set-env name=IMAGE::ghcr.io/${{ github.repository_owner }}/${IMG}"
         echo "::set-env name=BUILD_DATE::$(date +'%Y-%m-%d %H:%M:%S')"
         echo "::set-env name=GIT_SHA::$(echo ${{ github.sha }} | cut -c1-7)"
         echo "::set-env name=GIT_REF::$(git symbolic-ref -q --short HEAD || git describe --tags --exact-match)"
@@ -63,9 +64,10 @@ jobs:
     -
       name: Set Environment Variables
       run: |
+        IMG=cat-siren
         echo "::set-env name=BUILD_VER::1.0.$GITHUB_RUN_NUMBER"
-        echo "::set-env name=IMG::cat-siren"
-        echo "::set-env name=IMAGE::ghcr.io/${{ github.repository_owner }}/${{ env.IMG }}"
+        echo "::set-env name=IMG::${IMG}"
+        echo "::set-env name=IMAGE::ghcr.io/${{ github.repository_owner }}/${IMG}"
         echo "::set-env name=BUILD_DATE::$(date +'%Y-%m-%d %H:%M:%S')"
         echo "::set-env name=GIT_SHA::$(echo ${{ github.sha }} | cut -c1-7)"
         echo "::set-env name=GIT_REF::$(git symbolic-ref -q --short HEAD || git describe --tags --exact-match)"

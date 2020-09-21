@@ -2,13 +2,12 @@
 
 name=cat-siren
 username=thnk2wn
-image="$username/$name:latest"
 
 while [[ $# -ge 1 ]]; do
     i="$1"
     case $i in
         -d|--debug)
-            image="$username/$name:latest-debug"
+            name=cat-siren-debug
             shift
             ;;
         *)
@@ -19,6 +18,7 @@ while [[ $# -ge 1 ]]; do
     shift
 done
 
+image="ghcr.io/$username/$name:latest"
 imageIdBefore=$(docker images --format '{{.ID}}' $image)
 
 echo "Pulling latest image - $image"

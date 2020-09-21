@@ -46,15 +46,15 @@ jobs:
         labels: |
           org.opencontainers.image.authors=${{ github.repository_owner }}
           org.opencontainers.image.created=${{ env.BUILD_DATE }}
+          org.opencontainers.image.description=Created from commit ${{ env.GIT_SHA }} and ref ${{ env.GIT_REF }}
           org.opencontainers.image.ref.name=${{ env.GIT_REF }}
           org.opencontainers.image.revision=${{ github.sha }}
           org.opencontainers.image.source=https://github.com/${{ github.repository }}
           org.opencontainers.image.version=${{ env.BUILD_VER }}
         tags: |
           ${{ env.IMAGE }}:latest
-          ${{ env.IMAGE }}:${{ env.BUILD_VER }}
           ${{ env.IMAGE }}:${{ env.GIT_SHA }}
-          ${{ env.IMAGE }}:${{ env.GIT_REF }}
+          ${{ env.IMAGE }}:${{ env.BUILD_VER }}
         push: true
         secrets: |
             GIT_AUTH_TOKEN=${{ secrets.DOCKER_PASSWORD }}
@@ -69,7 +69,7 @@ jobs:
     -
       name: Set Environment Variables
       run: |
-        IMG=cat-siren
+        IMG=cat-siren-debug
         echo "::set-env name=BUILD_VER::1.0.$GITHUB_RUN_NUMBER"
         echo "::set-env name=IMG::${IMG}"
         echo "::set-env name=IMAGE::ghcr.io/${{ github.repository_owner }}/${IMG}"
@@ -105,12 +105,15 @@ jobs:
         labels: |
           org.opencontainers.image.authors=${{ github.repository_owner }}
           org.opencontainers.image.created=${{ env.BUILD_DATE }}
+          org.opencontainers.image.description=Created from commit ${{ env.GIT_SHA }} and ref ${{ env.GIT_REF }}
           org.opencontainers.image.ref.name=${{ env.GIT_REF }}
           org.opencontainers.image.revision=${{ github.sha }}
           org.opencontainers.image.source=https://github.com/${{ github.repository }}
           org.opencontainers.image.version=${{ env.BUILD_VER }}
         tags: |
-          ${{ env.IMAGE }}:latest-debug
+          ${{ env.IMAGE }}:latest
+          ${{ env.IMAGE }}:${{ env.GIT_SHA }}
+          ${{ env.IMAGE }}:${{ env.BUILD_VER }}
         push: true
         secrets: |
             GIT_AUTH_TOKEN=${{ secrets.DOCKER_PASSWORD }}

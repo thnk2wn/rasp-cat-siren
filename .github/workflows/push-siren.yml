@@ -1,6 +1,7 @@
 name: Cat Siren Push
 
 on:
+  workflow_dispatch:
   push:
     paths:
     - 'siren/**'
@@ -53,6 +54,7 @@ jobs:
           org.opencontainers.image.version=${{ env.BUILD_VER }}
         tags: |
           ${{ env.IMAGE }}:latest
+          ${{ env.IMAGE }}:${{ env.GIT_REF }}
           ${{ env.IMAGE }}:${{ env.GIT_SHA }}
           ${{ env.IMAGE }}:${{ env.BUILD_VER }}
         push: true
@@ -64,7 +66,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
 
     -
       name: Set Environment Variables
@@ -112,6 +114,7 @@ jobs:
           org.opencontainers.image.version=${{ env.BUILD_VER }}
         tags: |
           ${{ env.IMAGE }}:latest
+          ${{ env.IMAGE }}:${{ env.GIT_REF }}
           ${{ env.IMAGE }}:${{ env.GIT_SHA }}
           ${{ env.IMAGE }}:${{ env.BUILD_VER }}
         push: true
